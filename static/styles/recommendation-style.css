@@ -1,0 +1,278 @@
+/* Main styles */
+.game-card {
+    background-color: #1a2030;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+    transition: transform 0.2s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #2a3040;
+    min-height: 380px;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-header {
+    position: relative;
+}
+
+.game-header img {
+    width: 100%;
+    display: block;
+}
+
+.game-info {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-title {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.game-genre {
+    color: #8f98a8;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.game-stats {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.svd-score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(125, 70, 170, 0.9);
+    color: white;
+    border-radius: 12px;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.review-positive {
+    color: #66c0f4;
+}
+
+.review-mixed {
+    color: #b9a074;
+}
+
+.review-negative {
+    color: #ff7b7b;
+}
+
+.matrix-score-badge {
+    background-color: rgba(125, 70, 170, 0.2);
+    color: #b980ff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.matrix-score-badge i {
+    margin-right: 5px;
+}
+
+.game-explanation {
+    color: #8f98a8;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+/* Score components styling */
+.score-components {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.score-badge {
+    font-size: 0.75rem;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background-color: #2a3040;
+    color: #8f98a8;
+    white-space: nowrap;
+}
+
+.score-badge.friends, .score-badge.popularity {
+    background-color: rgba(102, 187, 255, 0.2);
+    color: #66bbff;
+}
+
+.score-badge.playtime {
+    background-color: rgba(76, 217, 100, 0.2);
+    color: #4cd964;
+}
+
+.score-badge.reviews {
+    background-color: rgba(255, 204, 0, 0.2);
+    color: #ffcc00;
+}
+
+.score-badge.players {
+    background-color: rgba(255, 149, 0, 0.2);
+    color: #ff9500;
+}
+
+.score-badge.matrix {
+    background-color: rgba(125, 70, 170, 0.2);
+    color: #b980ff;
+}
+
+.section-container {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    color: #fff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a3040;
+}
+
+.loading-container {
+    height: 4px;
+    background: rgba(125, 70, 170, 0.2);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.loading-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #7d46aa, #b980ff);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Weights explanation */
+.weights-explanation {
+    background-color: rgba(42, 48, 64, 0.7);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #3a4050;
+}
+
+.weights-explanation h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.weights-explanation p {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #d1d5db;
+}
+
+.weights-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.weight-badge {
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-weight: 500;
+}
+
+.weight-badge i {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+.weight-badge.friends {
+    background-color: rgba(102, 187, 255, 0.2);
+    color: #66bbff;
+}
+
+.weight-badge.playtime {
+    background-color: rgba(76, 217, 100, 0.2);
+    color: #4cd964;
+}
+
+.weight-badge.reviews {
+    background-color: rgba(255, 204, 0, 0.2);
+    color: #ffcc00;
+}
+
+.weight-badge.players {
+    background-color: rgba(255, 149, 0, 0.2);
+    color: #ff9500;
+}
+
+.weight-badge.popularity {
+    background-color: rgba(102, 187, 255, 0.2);
+    color: #66bbff;
+}
+
+.weight-badge.matrix {
+    background-color: rgba(125, 70, 170, 0.2);
+    color: #b980ff;
+}
+
+.weight-footer {
+    font-size: 0.85rem;
+    color: #8f98a8;
+    font-style: italic;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+
+.nav-container .logo {
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.logo {
+    max-height: 90px;
+    width: 200px;
+}
+
+.nav-item {
+    font-weight: 600;
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--steam-blue-lighter);
+}

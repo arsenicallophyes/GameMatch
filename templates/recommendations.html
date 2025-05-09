@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Match</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/recommendation.css') }}">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/recommendation-style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+    <div class="navigation">
+        <div class="nav-container">
+            <a href="/dashboard" class="logo"><img class="logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="GameMatch logo"></a>
+            <div class="nav-menu">
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="" class="nav-item active">Recommendation</a>
+                <a href="/library" class="nav-item">Library</a>
+                <a href="/profile" class="nav-item">Profile</a>
+            </div>
+            
+            <div class="user-menu">
+                <img class="avatar-small" src="{{AVATAR_MEDIUM}}" alt="Avatar">
+                <a href="/profile" class="nav-item">{{USERNAME}}</a>
+                <a href="/logout" class="nav-item">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="loading-container" id="loadingContainer">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <section id="weightsExplanation" class="weights-explanation">
+            <h3><i class="bi bi-info-circle me-2"></i>How Our Recommendations Work</h3>
+            <p>Your personalized recommendations use two different algorithms:</p>
+            
+            <p><strong>1. Matrix Factorization (SVD):</strong> For Matrix Factorization Recommendations, we use Singular Value Decomposition to analyze play patterns, discovering hidden connections between games.</p>
+            
+            <p><strong>2. Smart Recommendations:</strong> For other sections, we consider multiple factors with different weights:</p>
+            
+            <div class="weights-badges">
+                <div class="weight-badge friends">
+                    <i class="bi bi-people-fill"></i>Friend Ownership
+                </div>
+                <div class="weight-badge playtime">
+                    <i class="bi bi-clock-fill"></i>Playtime
+                </div>
+                <div class="weight-badge reviews">
+                    <i class="bi bi-star-fill"></i>Reviews
+                </div>
+                <div class="weight-badge players">
+                    <i class="bi bi-controller"></i>Active Players
+                </div>
+                <div class="weight-badge popularity">
+                    <i class="bi bi-graph-up"></i>Popularity
+                </div>
+            </div>
+            
+            <p>The percentages shown on game cards represent the relative importance of each factor in that specific recommendation. This helps you understand why a game was recommended to you.</p>
+            
+            <div class="weight-footer">Matrix scores (SVD) represent mathematical matching based on play patterns, with higher values indicating stronger recommendations. These scores typically range from near 0 to around 7, with anything above 3 being a strong match.</div>
+        </section>
+        <section id="matrixRecommendations" class="section-container">
+            <h2 class="section-title">
+                <i class="bi bi-grid-3x3-gap me-2"></i>Matrix Factorization Recommendations
+                <small class="text-muted d-block mt-2 fs-6">Games discovered through SVD pattern analysis</small>
+            </h2>
+            <div class="row">
+                {% for app_id, score in SVD_scores %}
+                    {% set game = app_id|fetchGame %}
+                    {% if game %}
+                        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                            <div class="game-card" data-appid="{{app_id}}" onclick="App.navigateToGame({{app_id}})">
+                                <div class="game-header">
+                                    <img src="{{ game.images.header_image }}" alt="{{ game.name }}">
+                                    <div class="svd-score">{{score}}% match</div>
+                                </div>
+                                <div class="game-info">
+                                    <h5 class="game-title">{{game.name}}</h5>
+                                    <div class="game-genre">{{game.genres | join(', ')}}</div>
+                                    
+                                    <div class="game-stats">
+                                        <div class="review-positive">{{game.reviews.review_decription}}</div>
+                                    </div>
+                                    
+                                    <div class="matrix-score-badge">
+                                        <i class="bi bi-grid-3x3-gap"></i> Score: {{score}}%
+                                    </div>
+                                    
+                                    <div class="game-explanation">Highly recommended based on your play history</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                <div class="col-12">
+                    <div class="no-data-message">
+                        <p><i class="bi bi-info-circle me-2"></i>No games found for this section.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        <section id="personalRecommendations" class="section-container" style="display: block;">
+            <h2 class="section-title">
+                <i class="bi bi-person-circle me-2"></i>Personalized Recommendations
+                <small class="text-muted d-block mt-2 fs-6">Games tailored to your play history</small>
+            </h2>
+        <div id="personalRecommendationsContainer">
+            {% for section_title, section_data, section_css in sections%}
+            <div class="mb-4 genre-block">
+                <h5 class="genre-subtitle mb-3"><i class="bi bi-{{section_css}} me-2"></i>{{section_title}}</h5>
+                <div class="row genre-row">
+            
+                    {% for app_id in section_data %}
+                        {% set score, playtime, components = WRS_scores.get(app_id)%}
+                        {% set friends_score, playtime_score, review_score, popularity_score =  components %}
+                        {% set game = app_id|fetchGame %}
+                        {% if game %}
+                            <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                                <div class="game-card" data-appid="{{app_id}}" onclick="App.navigateToGame({{app_id}})">
+                                    <div class="game-header">
+                                        <img src="{{ game.images.header_image }}" alt="{{ game.name }}">
+                                    </div>
+                                    <div class="game-info">
+                                        <h5 class="game-title">{{game.name}}</h5>
+                                        <div class="game-genre">{{game.genres | join(', ')}}</div>
+                                        <div class="game-stats">
+                                            <div class="friend-count"><i class="bi bi-people-fill"></i>{{friends_recs.get(app_id, "")|length }}</div>
+                                            <div class="review-positive">{{game.reviews.review_decription}}</div>
+                                        </div>
+                                        <div class="mt-2 small text-muted">Average Playtime: {{playtime|format_playtime}}</div>
+                                        <div class="mt-1 small"><i class="bi bi-controller me-1"></i>{{game.concurrent_plays}} current players</div>
+                                        <div class="score-components"><span class="score-badge friends">
+                                        <i class="bi bi-people-fill me-1"></i>{{friends_score}}%
+                                    </span><span class="score-badge playtime">
+                                        <i class="bi bi-clock-fill me-1"></i>{{playtime_score}}%
+                                    </span><span class="score-badge reviews">
+                                        <i class="bi bi-star-fill me-1"></i>{{review_score}}%
+                                    </span><span class="score-badge players">
+                                        <i class="bi bi-controller me-1"></i>{{popularity_score}}%
+                                    </span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    <div class="col-12">
+                        <div class="no-data-message">
+                            <p><i class="bi bi-info-circle me-2"></i>No games found for this section.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <section id="trendingGames" class="section-container" style="display: block;">
+                <h2 class="section-title">
+                    <i class="bi bi-graph-up me-2"></i>Trending on Steam
+                    <small class="text-muted d-block mt-2 fs-6">Popular games right now</small>
+                </h2>
+                <div class="row" id="trendingGamesContainer">
+                {% for app_id in trending_games_ids %}
+                    {% set game = app_id|fetchGame %}
+                    {% if game %}
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                        <div class="game-card" data-appid="{{app_id}}" onclick="App.navigateToGame({{app_id}})">
+                            <div class="game-header">
+                                <img src="{{ game.images.header_image }}" alt="{{ game.name }}">
+                            </div>
+                            <div class="game-info">
+                                <h5 class="game-title">{{game.name}}</h5>
+                                <div class="game-genre">{{game.genres | join(', ')}}</div>
+                                <div class="game-stats">
+                                    <div class="review-positive">{{game.reviews.review_decription}}</div>
+                                    <div>{{game.owners}}</div>
+                                </div>
+                                <div class="mt-1 small"><i class="bi bi-controller me-1"></i>{{game.concurrent_plays}} current players</div>
+                                <div class="score-components"><span class="score-badge players">
+                                <i class="bi bi-controller me-1"></i>{{game|activePlayerBase}}%
+                            </span></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="col-12">
+                    <div class="no-data-message">
+                        <p><i class="bi bi-info-circle me-2"></i>No games found for this section.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+
+            
+            <section id="friendsPlaying" class="section-container" style="display: block;">
+                <h2 class="section-title">
+                    <i class="bi bi-people me-2"></i>Games Your Friends Play
+                    <small class="text-muted d-block mt-2 fs-6">Popular among your Steam friends</small>
+                </h2>
+                <div class="row" id="friendsPlayingContainer">
+                {% for app_id, friend_list in friends_recs.items() %}
+                    {% set game = app_id|fetchGame %}
+                    {% if game %}
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                        <div class="game-card" data-appid="{{app_id}}" onclick="App.navigateToGame({{app_id}})">
+                            <div class="game-header">
+                                <img src="{{ game.images.header_image }}" alt="{{ game.name }}">
+                            </div>
+                            <div class="game-info">
+                                <h5 class="game-title">{{game.name}}</h5>
+                                <div class="game-genre">{{game.genres | join(', ')}}</div>
+                                <div class="game-stats">
+                                    <div class="review-positive">{{game.reviews.review_decription}}</div>
+                                    <div>{{game.owners}}</div>
+
+                                </div>
+
+                                <div class="friend-count"><i class="bi bi-people-fill"></i>{{friend_list|length}}</div>                       
+
+        
+                                <div class="friends-avatars">
+                                    {% for friend in friend_list %}
+                                    <img src="{{friend_dict.get(friend)[0]}}" alt="Friend" title="{{friend_dict.get(friend)[1]}}">
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="col-12">
+                    <div class="no-data-message">
+                        <p><i class="bi bi-info-circle me-2"></i>No games found for this section.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            
+            </section>
+            <section id="reentlyPlayed" class="section-container" style="display: block;">
+                <h2 class="section-title">
+                    <i class="bi bi-clock-history me-2"></i>Recently Played Games
+                    <small class="text-muted d-block mt-2 fs-6">Games you've played recently</small>
+                </h2>
+                <div class="row" id="recentlyPlayedContainer">
+                {% for app_id in recently_played %}
+                    {% set game = app_id|fetchGame %}
+                    {% if game %}
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                        <div class="game-card" data-appid="{{app_id}}" onclick="App.navigateToGame({{app_id}})">
+                            <div class="game-header">
+                                <img src="{{ game.images.header_image }}" alt="{{ game.name }}">
+                            </div>
+                            <div class="game-info">
+                                <h5 class="game-title">{{game.name}}</h5>
+                                <div class="game-genre">{{game.genres | join(', ')}}</div>
+                                <div class="game-stats">
+                                    <div class="review-positive">{{game.reviews.review_decription}}</div>
+                                    <div>{{game.owners}}</div>
+                                    <div class="friend-count"><i class="bi bi-people-fill"></i>{{friend_list|length}}</div>    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="col-12">
+                    <div class="no-data-message">
+                        <p><i class="bi bi-info-circle me-2"></i>No games found for this section.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            
+            </section>
+        </section>
+    </div>
+    <footer>
+        <div class="container"></div>
+    </footer>
+    
+</body>
+</html>

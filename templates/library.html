@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{USERNAME}}'s Game Library</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/library.css') }}">
+</head>
+<body>
+    <div class="navigation">
+        <div class="nav-container">
+            <a href="/dashboard" class="logo"><img class="logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="GameMatch logo"></a>
+            
+            <div class="nav-menu">
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="/recommendations" class="nav-item">Recommendation</a>
+                <a href="" class="nav-item active">Library</a>
+                <a href="/profile" class="nav-item">Profile</a>
+            </div>
+            
+            <div class="user-menu">
+                <img class="avatar-small" src="{{AVATAR_MEDIUM}}" alt="Avatar">
+                <a href="/profile" class="nav-item">{{USERNAME}}</a>
+                <a href="/logout" class="nav-item">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>{{USERNAME}}'s Game Library</h1>
+        
+        <div class="content-section">
+            <div class="library-header">
+                <div class="library-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">{{OWNED_GAMES}}</div>
+                        <div class="stat-label">Games Owned</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{TOTAL_PLAYTIME}}</div>
+                        <div class="stat-label">Total Playtime</div>
+                    </div>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" name="search" placeholder="Search games..." class="search-input">
+                    <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+            
+            <div class="filter-options">
+                <input type="text" id="searchInput" placeholder="Search games..." class="search-input">
+                <div class="sort-options">
+                    <select id="sortBy" class="sort-select">
+                        <option value="name">Name</option>
+                        <option value="playtime">Playtime</option>
+                    </select>
+                    <select id="sortOrder" class="sort-select">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+                <div class="view-options">
+                    <button class="view-button" id="gridViewBtn" title="Grid view"><i class="bi bi-grid-3x3-gap"></i></button>
+                    <button class="view-button active" id="listViewBtn" title="List view"><i class="bi bi-list-ul"></i></button>
+                </div>
+            </div>
+            
+            {% if games %}
+            <div class="game-list" id="gameList">
+                {% for game in games %}
+                    <div class="game-list-item" 
+                        data-name="{{ game.name }}" 
+                        data-playtime="{{games_info.get(game.app_id).playtime }}" 
+                        data-lastplayed="{{ games_info.get(game.app_id).last_played }}"
+                        onclick="window.open('https://store.steampowered.com/app/{{ game.app_id }}', '_blank')">
+                        <img src="{{ game.images.header_image }}" alt="{{ game.name }}" class="game-list-image">
+                        <div class="game-list-content">
+                            <h3 class="game-list-title">{{ game.name }}</h3>
+                            <div class="game-list-meta">
+                                <span>App ID: {{ game.app_id }}</span>
+                                {% if games_info.get(game.app_id) %}
+                                <span>Last played: {{ games_info.get(game.app_id).last_played|time_since }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="game-list-stats">
+                                <div class="game-list-stat">
+                                    <div class="game-list-stat-value">{{games_info.get(game.app_id).playtime|format_playtime }}</div>
+                                    <div class="game-list-stat-label">Playtime</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+    
+            <div class="game-grid hidden" id="gameGrid">
+                {% for game in games %}
+                    <div class="game-card" 
+                        data-name="{{ game.name|lower }}" 
+                        data-playtime="{{games_info.get(game.app_id).playtime }}" 
+                        data-lastplayed="{{ games_info.get(game.app_id).last_played }}"
+                        onclick="window.open('https://store.steampowered.com/app/{{ game.app_id }}', '_blank')">
+                        <img src="{{ game.images.header_image }}" alt="{{ game.name }}" class="game-card-image">
+                        <div class="game-card-content">
+                            <h3 class="game-card-title" title="{{ game.name }}">{{ game.name }}</h3>
+                            {% if games_info.get(game.app_id) %}
+                            <div class="game-card-info">Last played: {{ games_info.get(game.app_id).last_played|time_since }}</div>
+                            {% endif %}
+                            <div class="game-card-stats">
+                                <div class="game-card-stat">
+                                    <span class="game-card-stat-label">Total playtime:</span>
+                                    <span class="game-card-stat-value">{{games_info.get(game.app_id).playtime|format_playtime }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+    
+            {% else %}
+            <div class="empty-library">
+                <i class="bi bi-controller"></i>
+                <h3>No games found</h3>
+                <p>This profile doesn't have any games or has a private game library.</p>
+            </div>
+            {% endif %}
+        </div>
+    
+    <script>
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        const gameGrid = document.getElementById('gameGrid');
+        const gameList = document.getElementById('gameList');
+        
+        const savedView = localStorage.getItem('libraryView') || 'list';
+        
+        if (savedView === 'grid')
+        {
+            gameList.classList.add('hidden');
+            gameGrid.classList.remove('hidden');
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+        } else
+        {
+            gameGrid.classList.add('hidden');
+            gameList.classList.remove('hidden');
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        }
+        
+        gridViewBtn.addEventListener('click', function()
+            {
+                gameList.classList.add('hidden');
+                gameGrid.classList.remove('hidden');
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                localStorage.setItem('libraryView', 'grid');
+            }
+        );
+        
+        listViewBtn.addEventListener('click', function()
+            {
+                gameGrid.classList.add('hidden');
+                gameList.classList.remove('hidden');
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                localStorage.setItem('libraryView', 'list');
+            }
+        );
+    </script>
+
+    <script>
+        document.getElementById('sortBy').addEventListener('change', sortGames);
+        document.getElementById('sortOrder').addEventListener('change', sortGames);
+
+        function sortGames()
+        {
+            const sortBy = document.getElementById('sortBy').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+            localStorage.setItem('sortBy', sortBy);
+            localStorage.setItem('sortOrder', sortOrder);
+            const listView = !document.getElementById('gameList').classList.contains('hidden');
+            const container = listView ? document.getElementById('gameList') : document.getElementById('gameGrid');
+            const items = Array.from(container.children);
+            const multiplier = sortOrder === 'asc' ? 1 : -1;
+            items.sort((a, b) => 
+                {
+                    const aValue = a.dataset[sortBy];
+                    const bValue = b.dataset[sortBy];
+
+                    if (sortBy === 'name')
+                    {
+                        return aValue.localeCompare(bValue) * multiplier;
+                    } else
+                    {
+                        return (parseInt(aValue) - parseInt(bValue)) * multiplier;
+                    }
+                }
+            );
+
+            for (const item of items) {container.appendChild(item);}
+        }
+        const savedSortBy = localStorage.getItem('sortBy');
+        const savedSortOrder = localStorage.getItem('sortOrder');
+
+        if (savedSortBy) {
+            document.getElementById('sortBy').value = savedSortBy;
+        }
+
+        if (savedSortOrder)
+        {
+            document.getElementById('sortOrder').value = savedSortOrder;
+        }
+        sortGames();
+    </script>
+</body>
+</html>

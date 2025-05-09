@@ -1,0 +1,339 @@
+:root {
+    --steam-blue: #1b2838;
+    --steam-blue-darker: #171a21;
+    --steam-blue-lighter: #2a475e;
+    --steam-text: #c6d4df;
+    --steam-highlight: #66c0f4;
+    --steam-green: #a3cf06;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--steam-blue);
+    color: var(--steam-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation styles matching game.php */
+.navigation {
+    background-color: var(--steam-blue-darker);
+    padding: 15px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(42, 71, 94, 0.5);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-item {
+    color: #b8b6b4;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--steam-blue-lighter);
+    color: #fff;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* Existing recommendation page styles */
+.section-title {
+    color: #ffffff;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--steam-blue-lighter);
+    padding-bottom: 10px;
+}
+
+/* Improve section subtitle contrast */
+.section-title small {
+    color: #a4c6e2 !important;
+}
+
+.loading-container {
+    height: 5px;
+    background-color: var(--steam-blue-lighter);
+    margin-bottom: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.loading-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--steam-highlight);
+    transition: width 0.5s ease;
+}
+
+.game-card {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.game-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.game-match {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--steam-green);
+    color: black;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.game-player-count {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--steam-highlight);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.game-price {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--steam-text);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.game-info {
+    padding: 15px;
+}
+
+.game-title {
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Improve contrast for game genre text */
+.game-genre {
+    color: #a4c6e2 !important;
+    font-size: 12px;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Improve contrast for game stats */
+.game-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #a4c6e2 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.friend-count {
+    display: flex;
+    align-items: center;
+}
+
+.friend-count i {
+    margin-right: 5px;
+    color: var(--steam-highlight);
+}
+
+.review-positive {
+    color: var(--steam-green);
+}
+
+.review-mixed {
+    color: #b9a074;
+}
+
+.review-negative {
+    color: #a34c4c;
+}
+
+.section-container {
+    display: block;
+}
+
+.friends-avatars {
+    margin-top: 8px;
+    display: flex;
+}
+
+.friends-avatars img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: -8px;
+    border: 2px solid var(--steam-blue);
+}
+
+.error-message {
+    background-color: rgba(255, 87, 87, 0.1);
+    border: 1px solid #ff5757;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #ff9797;
+    font-size: 14px;
+}
+
+.no-data-message {
+    background-color: rgba(102, 192, 244, 0.1);
+    border: 1px solid var(--steam-highlight);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.view-details-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--steam-highlight);
+    color: white;
+    text-align: center;
+    padding: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.game-card:hover .view-details-btn {
+    opacity: 1;
+}
+
+footer {
+    background-color: var(--steam-blue-darker);
+    color: #8ba4b7;
+    padding: 20px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.section-menu {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--steam-blue-lighter);
+    padding-bottom: 10px;
+}
+
+.section-menu-item {
+    color: #b8b6b4;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 5px 5px 0;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.section-menu-item i {
+    margin-right: 5px;
+}
+
+.section-menu-item:hover, .section-menu-item.active {
+    background-color: var(--steam-blue-lighter);
+    color: #fff;
+}
+
+/* Improve contrast for text-muted class used by Bootstrap */
+.text-muted {
+    color: #a4c6e2 !important;
+}
+
+/* Improve contrast for small explanation text within game cards */
+.game-info .small.text-muted {
+    color: #a4c6e2 !important;
+}
+@font-face {
+    font-family: 'Cyberpunk';
+    src: url('https://student.csc.liv.ac.uk/~sgmdorri/steam-login/fonts/Cyberpunk.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  .navigation .logo,
+  .nav-container .logo {
+    font-family: 'Cyberpunk', sans-serif;
+    font-weight: normal;
+    color: #fcee0a; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+  }
+  
+
+  

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error {{ CODE }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    .error-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 480px;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 2.5rem;
+      color: #e74c3c;
+    }
+    p {
+      font-size: 1.1rem;
+      margin: 1rem 0 2rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.2s ease;
+    }
+    .btn:hover {
+      background-color: #2980b9;
+    }
+    small {
+      display: block;
+      margin-top: 1.5rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <h1>Something went wrong</h1>
+      <small>Error {{ CODE }}</small>
+    <p>{{ MESSAGE }}</p>
+    <a href="{{ url_for('baseURL') }}" class="btn">Go Home</a>
+  </div>
+</body>
+</html>

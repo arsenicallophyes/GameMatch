@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Match</title>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/login.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Game Match</h1>        
+        <p>Connect with your Steam account to find games your friends are playing</p>
+        
+        <a href="/login" class="steam-login-btn">
+            <img src="https://community.cloudflare.steamstatic.com/public/images/signinthroughsteam/sits_01.png" alt="Sign in through Steam">
+        </a>
+        
+        <div class="footer">By logging in, you acknowledge and consent that Game Match will access and store your publicly available 
+            Steam profile and gameplay data on our servers. <br>
+            This site uses Steam authentication and API to access your public gaming 
+            information. We don't store your credentials.
+        </div>
+    </div>
+</body>
+</html>

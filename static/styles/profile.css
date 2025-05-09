@@ -1,0 +1,254 @@
+:root {
+    --steam-blue: #1b2838;
+    --steam-blue-light: #2a475e;
+    --steam-blue-lighter: #3c6e96;
+    --steam-grey: #b8b6b4;
+    --steam-black: #171a21;
+    --steam-green: #5c7e10;
+    --text-color: #eee;
+    --bg-color: #2b3543;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: var(--steam-blue-lighter);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #fff;
+}
+
+.navigation {
+    background-color: var(--steam-black);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo {
+    max-height: 90px;
+    width: 200px;
+}
+
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-item {
+    color: var(--steam-grey);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--steam-blue-light);
+    color: #fff;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--steam-blue-lighter);
+}
+
+.content-section {
+    background-color: rgba(27, 40, 56, 0.8);
+    border-radius: 6px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    color: #fff;
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--steam-blue-lighter);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.user-welcome {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    border: 3px solid var(--steam-blue-lighter);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-text {
+    flex: 1;
+}
+
+.welcome-text h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.welcome-text p {
+    font-size: 1rem;
+    color: var(--steam-grey);
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.detail-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(60, 110, 150, 0.2);
+}
+
+.detail-label {
+    flex: 0 0 150px;
+    font-weight: bold;
+    color: var(--steam-blue-lighter);
+}
+
+.detail-value {
+    flex: 1;
+}
+
+.profile-link {
+    color: var(--steam-blue-lighter);
+    word-break: break-all;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: var(--steam-blue);
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card h3 {
+    color: var(--steam-grey);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.action-button {
+    background-color: var(--steam-blue-light);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: var(--steam-blue-lighter);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-menu {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .user-menu {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .user-welcome {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-actions {
+        justify-content: center;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .detail-label {
+        flex: none;
+    }
+
+}

@@ -1,0 +1,81 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{USERNAME}}'s Steam Profile</title>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/profile.css') }}">
+</head>
+<body>
+
+    <div class="navigation">
+        <div class="nav-container">
+            <a href="/dashboard" class="logo"><img class="logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="GameMatch logo"></a>
+            
+            <div class="nav-menu">
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="/recommendations" class="nav-item">Recommendation</a>
+                <a href="/library" class="nav-item">Library</a>
+                <a href="" class="nav-item active">Profile</a>
+            </div>
+            
+            <div class="user-menu">
+                <a class="nav-item">{{USERNAME}}</a>
+                <a href="/logout" class="nav-item">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="user-welcome">
+            <img src="{{AVATAR_FULL}}" alt="User Avatar" class="user-avatar">
+            <div class="welcome-text">
+                <h2>{{USERNAME}}'s Profile</h2>
+                <p>Steam ID: {{STEAMID}}</p>               
+                <div class="profile-actions">
+                    <a href="https://steamcommunity.com/profiles/{{STEAMID}}/" target="_blank" class="action-button">View on Steam</a>
+                    <a href="/library" class="action-button">View Game Library</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2 class="section-title">Profile Details</h2>
+        <div class="profile-details">
+            <div class="detail-row">
+                <div class="detail-label">Account Created</div>
+                <div class="detail-value">{{DATE_CREATED}}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Last Online</div>
+                <div class="detail-value">{{LASTLOGOFF}}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Profile URL</div>
+                <div class="detail-value"><a href="https://steamcommunity.com/profiles/{{STEAMID}}/" target="_blank" class="profile-link">https://steamcommunity.com/profiles/{{STEAMID}}/</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2 class="section-title">Gaming Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Games Owned</h3>
+                <div class="stat-value">{{OWNED_GAMES}}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Games Played</h3>
+                <div class="stat-value">{{GAMES_PLAYED}}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Playtime</h3>
+                <div class="stat-value">{{TOTAL_PLAYTIME}}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Friends Added</h3>
+                <div class="stat-value">{{NUM_FRIENDS}}</div>
+            </div>
+        </div>
+    </div>
+
+</body></html>

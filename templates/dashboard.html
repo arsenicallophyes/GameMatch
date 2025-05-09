@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameMatch</title>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='styles/dashboard.css') }}">
+    <script src="{{ url_for('static', filename='scripts/dashboard.js') }}" type="text/javascript" defer></script>
+</head>
+<body>
+    <div class="navigation">
+        <div class="nav-container">
+            <a href="" class="logo"><img class="logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="GameMatch logo"></a>
+            
+            <div class="nav-menu">
+                <a href="" class="nav-item active">Dashboard</a>
+                <a href="/recommendations" class="nav-item">Recommendation</a>
+                <a href="/library" class="nav-item">Library</a>
+                <a href="/profile" class="nav-item">Profile</a>
+            </div>
+            
+            <div class="user-menu">
+                <img class="avatar-small" src="{{AVATAR_MEDIUM}}" alt="Avatar">
+                <a href="/profile" class="nav-item">{{USERNAME}}</a>
+                <a href="/logout" class="nav-item">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>
+            Welcome back, {{USERNAME}}!
+        </h1>
+        <p>Based on your gameplay history and friend activity, here are some personalized recommendations:</p>
+        
+        <div id="dashboard-loading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading your personalized dashboard...</p>
+        </div>
+        <div id="dashboard-error" class="dashboard-error hidden"></div>
+        <div id="dashboard-content" class="dashboard-grid hidden">
+            <div class="dashboard-card">
+                <h3>
+                    Trending Games
+                    <span class="card-counter" id="recommended-counter">0</span>
+                </h3>
+                <div id="recommended-content"></div>
+            </div>
+            <div class="dashboard-card">
+                <h3>
+                    Recently Played Games
+                    <span class="card-counter" id="recently-played-counter">0</span>
+                </h3>
+                <div id="recently-played-content"></div>
+            </div>
+            <div class="dashboard-card">
+                <h3>
+                    Games Friends Own
+                    <span class="card-counter" id="common-games-counter">0</span>
+                </h3>
+                <div id="common-games-content"></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-text">
+                  
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const steamId = {{STEAMID}};
+        
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            document.body.addEventListener('click', function(event)
+            {
+                const gameItem = event.target.closest('.game-item');
+                if (gameItem)
+                {   
+                    window.location.href = '/recommendations';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
