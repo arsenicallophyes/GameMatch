@@ -72,7 +72,7 @@ The application expects both your Steam API key and Flask `SECRET_KEY` as **Wind
 
 1. Ensure your Windows environment has:
 
-   * `SECRETE_KEY` set (see step 2).
+   * `SECRET_KEY` set (see step 2).
    * `STEAM_API_KEY` set (see step 2).
 2. In the same PowerShell session, or Visual Studio Code run:
 
