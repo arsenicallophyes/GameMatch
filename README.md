@@ -7,7 +7,7 @@ These instructions will guide you through setting up and running the Game Match 
 ## Prerequisites
 
 1. **Windows 10/11** with **WSL (Windows Subsystem for Linux)** feature enabled:
-2. * Install **Ubuntu** from the Microsoft Store.
+2. Install **Ubuntu** from the Microsoft Store.
 3. **Python 3.12+** installed on Windows.
 4. **Redis** installed inside the Ubuntu WSL instance only.
 
